@@ -6,6 +6,7 @@ body {
 #container {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 #calculator {
@@ -18,13 +19,42 @@ body {
 button {
     padding: 10px;
     background-color: #E8EDDF;
-    border-radius: 15%;
-    margin: 5px;
+    border-radius: 5px;
 }
+
 
 .row {
     display: flex;
 }
+
+.button-wrapper {
+    display: flex;
+    width: 100%;
+}
+
+.button-wrapper button {
+    flex: 1;
+    margin: 5px;
+}
+
+/* Specific flex values for buttons */
+#btn-clear {
+    flex: 3; /* Takes up 3/4 of the row */
+    background-color: #CFDBD5;
+}
+
+#btn-divide {
+    flex: 1; /* Takes up 1/4 of the row */
+}
+
+#btn-0 {
+    flex: 2; /* Takes up 1/2 of the row */
+}
+
+#btn-equals {
+    flex: 2; /* Takes up 1/2 of the row */
+}
+
 
 #title {
     color: #E8EDDF;
@@ -44,6 +74,17 @@ h2 {
     background-color: #131313;
     color:#E8EDDF;
     padding: 5px;
+    padding-right: 10px;
     border-radius: 15px;
     margin-bottom: 10px;
+    text-align: right;
+}
+
+.operator {
+    background-color: #E8EDDF;
+}
+
+.num {
+    background-color: #F5CB5C;
+    border-color: #F5CB5C
 }
