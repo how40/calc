@@ -51,16 +51,10 @@ let fillDisplay = () => {
     numbers.forEach(number => {
         number.addEventListener("click", () => {
             let numTxt = number.textContent.trim();
-            if (newNumber) {
+            if (newNumber || display.textContent === "0") {
                 display.textContent = numTxt;
                 newNumber = false;
-            } else {
-                if (display.textContent === "0") {
-                    display.textContent = numTxt;
-                } else {
-                    display.textContent += numTxt;
-                }
-            }
+            } else display.textContent += numTxt;
         });
     });
 
@@ -79,6 +73,7 @@ let fillDisplay = () => {
                     secondNum = display.textContent;
                     let result = operate(operation, firstNum, secondNum);
                     display.textContent = result;
+                    
                     firstNum = result;
                     operation = null;
                     secondNum = null;
