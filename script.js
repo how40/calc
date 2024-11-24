@@ -1,59 +1,97 @@
-
 //simple arithmetic
 let add = (a,b) => a + b;
-
 let subtract = (a,b) => a - b;
-
 let multiply = (a,b) => a * b;
-
 let divide = (a,b) => a / b;
 
-
-let firstNum;
-let operator;
-let secondNum;
+let firstNum = null;
+let operation = null;
+let secondNum = null;
+let newNumber = true;
 
 let operate = (operator, firstNum, secondNum) => {
-    if (operator === '+') return add(firstNum,secondNum);
-    else if (operator === '-') return subtract(firstNum,secondNum);
-    else if (operator === '*') return multiply(firstNum,secondNum);
-    else if (operator === '/') return divide(firstNum,secondNum);
+    if (firstNum == null || secondNum == null) {
+        return "Invalid input";
+    }
+    
+    let a = parseFloat(firstNum);
+    let b = parseFloat(secondNum);
+
+    if (isNaN(a) || isNaN(b)) {
+        return "Invalid number(s)";
+    }
+
+    if (operator === '+') return add(a,b);
+    else if (operator === '-') return subtract(a,b);
+    else if (operator === '*') return multiply(a,b);
+    else if (operator === '/') return b === 0 ? "Cannot divide by zero" : divide(a,b);
     else return "OOPS!";
 }
 
-
-//fill display when button clicked
-let fillDisplay = () => {
-
-    const display = document.querySelector("#display");
-    const operators = Array.from(document.querySelectorAll(".operator"));
-    const numbers = Array.from(document.querySelectorAll(".num"))
-    display.textContent = "0"//initialized blank display
-
-    for(let i = 0; i < numbers.length; i++) { //add event listener to every number
-        numbers[i].addEventListener("click", () => { //any time a button is clicked, add its value to the display
-            let txt = numbers[i].textContent;
-            if (display.textContent === "0") display.textContent = "";
-            display.textContent += txt;
-            let displayVal = display.textContent; //val on display.. duh
-        })
-
-    for(let i = 0; i < operators.length; i++) { //add event listener to every operator
-        operators[i].addEventListener("click", () => {
-            let txt = operators[i].textContent;
-            if (txt === 'clear') display.textContent = "⠀";
-            else { //operator selected
-                numOne = display.textContent;
-                console.log("numOne: " + numOne);
-                let selected = txt;
-                console.log("selected operator: " + selected);
-                display.textContent = "⠀"
-            }
-        })
-    }
+let clearDisplay = () => {
+    document.querySelector("#display").textContent = "0";
 }
- 
 
-}//EOF
+let reset = () => {
+    clearDisplay();
+    firstNum = null;
+    operation = null;
+    secondNum = null;
+    newNumber = true;
+}
+
+let fillDisplay = () => {
+    const display = document.querySelector("#display");
+    const operators = document.querySelectorAll(".operator");
+    const numbers = document.querySelectorAll(".num");
+    
+    clearDisplay();
+
+    // Handle number clicks
+    numbers.forEach(number => {
+        number.addEventListener("click", () => {
+            let numTxt = number.textContent.trim();
+            if (newNumber) {
+                display.textContent = numTxt;
+                newNumber = false;
+            } else {
+                if (display.textContent === "0") {
+                    display.textContent = numTxt;
+                } else {
+                    display.textContent += numTxt;
+                }
+            }
+        });
+    });
+
+    // Handle operator clicks
+    operators.forEach(operator => {
+        operator.addEventListener("click", () => {
+            let opTxt = operator.textContent.trim();
+
+            if (opTxt === "clear") {
+                reset();
+                return;
+            }
+
+            if (opTxt === "=") {
+                if (operation && firstNum) {
+                    secondNum = display.textContent;
+                    let result = operate(operation, firstNum, secondNum);
+                    display.textContent = result;
+                    firstNum = result;
+                    operation = null;
+                    secondNum = null;
+                    newNumber = true;
+                }
+            } else {
+                // Handle arithmetic operators
+                operation = opTxt;
+                firstNum = display.textContent;
+                newNumber = true;
+            }
+        });
+    });
+}
 
 fillDisplay();
